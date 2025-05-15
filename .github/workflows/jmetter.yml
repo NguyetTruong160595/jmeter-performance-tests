@@ -26,14 +26,18 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           echo "JMETER_HOME=$(pwd)/apache-jmeter-5.6.3" >> $GITHUB_ENV
 
-      - name: Run JMeter test plan
+      - name: Run all JMeter test files
         run: |
           mkdir -p jmeter-results
-          ${{ env.JMETER_HOME }}/bin/jmeter \
-            -n \
-            -t jmeter/test-plan.jmx \
-            -l jmeter-results/results.jtl \
-            -e -o jmeter-results/html-report
+          for file in jmeter/*.jmx; do
+            test_name=$(basename "$file" .jmx)
+            echo "Running test: $test_name"
+            $JMETER_HOME/bin/jmeter \
+              -n \
+              -t "$file" \
+              -l "jmeter-results/${test_name}.jtl" \
+              -e -o "jmeter-results/${test_name}-report"
+          done
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
