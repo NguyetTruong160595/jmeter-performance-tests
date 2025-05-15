@@ -39,8 +39,9 @@ jobs:
               -e -o "jmeter-results/${test_name}-report"
           done        
 
-      - name: Upload HTML Report
-        uses: actions/upload-artifact@v4
+      - name: 📤 Upload all HTML reports
+        uses: actions/upload-artifact@v3
+        if: always()          # still upload even if a test fails
         with:
-          name: jmeter-html-report
-          path: jmeter-results/html-report
+          name: jmeter-html-reports
+          path: jmeter-results/**          # <-- matches what you created
