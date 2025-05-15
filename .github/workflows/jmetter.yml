@@ -40,7 +40,7 @@ jobs:
           done        
 
       - name: 📤 Upload all HTML reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()          # still upload even if a test fails
         with:
           name: jmeter-html-reports
